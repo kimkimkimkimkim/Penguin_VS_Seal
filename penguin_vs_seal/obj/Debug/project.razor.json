@@ -1,0 +1,14 @@
+{
+  "ProjectFilePath": "/Volumes/KESU/Document/GitHub/Penguin_VS_Seal/penguin_vs_seal/Assembly-CSharp.csproj",
+  "TargetFramework": "v3.5",
+  "TagHelpers": [],
+  "Configuration": {
+    "ConfigurationName": "UnsupportedRazor",
+    "LanguageVersion": "1.0",
+    "Extensions": [
+      {
+        "ExtensionName": "UnsupportedRazorExtension"
+      }
+    ]
+  }
+}

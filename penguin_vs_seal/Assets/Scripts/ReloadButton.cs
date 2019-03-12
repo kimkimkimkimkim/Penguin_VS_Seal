@@ -16,6 +16,8 @@ public class ReloadButton : MonoBehaviour {
 	}
 
 	public void Reload(){
+		//スタート
+		Time.timeScale = 1.0f;
 		// 現在のScene名を取得する
 		Scene loadScene = SceneManager.GetActiveScene();
 		// Sceneの読み直し

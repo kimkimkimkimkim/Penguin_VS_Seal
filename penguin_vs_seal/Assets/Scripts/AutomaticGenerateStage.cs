@@ -7,12 +7,16 @@ public class AutomaticGenerateStage : MonoBehaviour {
 
 	public GameObject BlockPrefab;
 	public GameObject SubPlayerPrefab;
+	public GameObject EnemyPrefab;
 
 	// Use this for initialization
 	void Start () {
 		InitialGenerate();
 		GenerateSubPlayer();
 		GenerateBlock();
+		StartCoroutine(DelayMethod(2.8f, ()=> {
+			GenerateEnemy();
+		}));
 	}
 
 	//最初の生成
@@ -49,12 +53,24 @@ public class AutomaticGenerateStage : MonoBehaviour {
 
 	//サブプレイヤーの作成
 	void GenerateSubPlayer(){
-		StartCoroutine(DelayMethod(2.8f, () =>
+		StartCoroutine(DelayMethod(5.6f, () =>
 		{
 			GameObject s_player = (GameObject)Instantiate(SubPlayerPrefab);
 			s_player.transform.parent = this.transform;
 			s_player.transform.position = new Vector3(14,-2.24f,-1); 
+			s_player.GetComponent<SubPlayerManager>().setPower(1);
 			GenerateSubPlayer();
+		}));
+	}
+
+	//敵の生成
+	void GenerateEnemy(){
+		StartCoroutine(DelayMethod(5.6f, () => {
+			GameObject enemy = (GameObject)Instantiate(EnemyPrefab);
+			enemy.transform.parent = this.transform;
+			enemy.transform.position = new Vector3(14,-2.44f,-1); 
+			enemy.GetComponent<EnemyManager>().setAttack(1);
+			GenerateEnemy();
 		}));
 	}
 

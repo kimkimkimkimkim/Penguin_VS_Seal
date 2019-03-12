@@ -7,6 +7,7 @@ public class PlayerActionManager : MonoBehaviour {
 	//オブジェクト参照
 	public GameObject gameManager; //ゲームマネージャー
 	public GameObject GameOverArea; //ゲームオーバー
+	public GameObject ClearView; //クリア画面
 
 	//グローバル変数
 	public LayerMask blockLayer; //ブロックレイヤー
@@ -17,7 +18,7 @@ public class PlayerActionManager : MonoBehaviour {
 	private Vector3 nowPos; //プレイヤーの現在の位置
 	private const float MOVE_SPEED = 3f; //移動速度固定値
 	private float moveSpeed; //プレイヤーの移動速度
-	private float jumpPower = 400; //ジャンプの力
+	private float jumpPower = 500; //ジャンプの力
 	private bool goJump = false; //ジャンプしたかどうか
 	private bool canJump = false; //ブロックに設置しているかどうか
 	private bool goFlag = false; //ゲームオーバー
@@ -128,6 +129,15 @@ public class PlayerActionManager : MonoBehaviour {
 				this.GetComponent<BattleManager>().Battle(my_pow,ene_pow,ene_object);
 			}
 		} 
+
+		if(col.gameObject.tag == "House"){
+			if(Time.timeScale != 0){
+				Time.timeScale = 0;
+			}else{
+				Time.timeScale = 1.0f;
+			}
+			ClearView.SetActive(true);
+		}
 		/*
 		//プレイ中でなければ衝突判定は行わない
 		if (gameManager.GetComponent<GameManager> ().gameMode != GameManager.GAME_MODE.PLAY) {

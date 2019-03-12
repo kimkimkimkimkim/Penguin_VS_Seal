@@ -11,12 +11,14 @@ public class AutomaticGenerateStage : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		/*
 		InitialGenerate();
 		GenerateSubPlayer();
 		GenerateBlock();
 		StartCoroutine(DelayMethod(2.8f, ()=> {
 			GenerateEnemy();
 		}));
+		*/
 	}
 
 	//最初の生成

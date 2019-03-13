@@ -18,10 +18,13 @@ public class PlayerActionManager : MonoBehaviour {
 	private Vector3 nowPos; //プレイヤーの現在の位置
 	private const float MOVE_SPEED = 3f; //移動速度固定値
 	private float moveSpeed; //プレイヤーの移動速度
-	private float jumpPower = 500; //ジャンプの力
+	private float jumpPower = 600; //ジャンプの力
 	private bool goJump = false; //ジャンプしたかどうか
 	private bool canJump = false; //ブロックに設置しているかどうか
 	private bool goFlag = false; //ゲームオーバー
+	private const int MAX_JUMP_COUNT = 2;	// ジャンプできる回数。 
+	private int jumpCount = 0; 
+	private bool isJump = false; 
 
 	public enum MOVE_DIR //移動方向定義
 	{
@@ -61,7 +64,12 @@ public class PlayerActionManager : MonoBehaviour {
 
 		//上方向キー
 		if (Input.GetKey (KeyCode.Space) || Input.GetMouseButtonDown(0)) {
+			/*
 			if (canJump) {
+				goJump = true;
+			}
+			*/
+			if(jumpCount <= MAX_JUMP_COUNT){
 				goJump = true;
 			}
 		}
@@ -97,20 +105,25 @@ public class PlayerActionManager : MonoBehaviour {
 
 		//ジャンプ処理
 		if (goJump) {
+			Vector3 v = rbody.velocity;
+			rbody.velocity = new Vector3(v.x,0,v.z); //y方向の速度を初期化
 			rbody.AddForce (Vector2.up * jumpPower);
+			jumpCount++; //ジャンプ回数をカウント
 			goJump = false;
 		}
 	}
 
-
-
+	//地面に着地している
 	void OnCollisionStay2D(Collision2D col){
-		canJump = true;
+		jumpCount = 0;
+		//canJump = true;
 	}
 
+	/* 
 	void OnCollisionExit2D(Collision2D col){
 		canJump = false;
 	}
+	*/
 
 	//衝突処理
 	void OnTriggerEnter2D(Collider2D col){
@@ -131,11 +144,14 @@ public class PlayerActionManager : MonoBehaviour {
 		} 
 
 		if(col.gameObject.tag == "House"){
+			Time.timeScale = 0;
+			/*
 			if(Time.timeScale != 0){
 				Time.timeScale = 0;
 			}else{
 				Time.timeScale = 1.0f;
 			}
+			*/
 			ClearView.SetActive(true);
 		}
 		/*

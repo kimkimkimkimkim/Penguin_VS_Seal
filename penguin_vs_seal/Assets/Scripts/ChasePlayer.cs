@@ -16,6 +16,9 @@ public class ChasePlayer : MonoBehaviour {
 	private float delay_time = 0.4f; 
 	private float offset_x = 1f;
 	private int c_count; //親の子要素の個数
+	private float current_pos_y = 0;
+	private float now_pos_y = 0;
+	private float acceptable_distance = 0.15f;
 
 	// Use this for initialization
 	void Start () {
@@ -42,6 +45,29 @@ public class ChasePlayer : MonoBehaviour {
 			//c_count = this.transform.parent.childCount;
 			Chase(player);
 		}
+	}
+
+	void FixedUpdate(){
+		Animation();
+	}
+
+	//ChasePlayerAnimation
+	void Animation(){
+		/* 
+		Vector3 pos = GetComponent<Transform>().position;
+		now_pos_y = pos.y;
+		if(now_pos_y - current_pos_y > acceptable_distance){
+			//上昇
+			animator.SetInteger("JumpFlag",1);
+		}else if(now_pos_y - current_pos_y < -1*acceptable_distance){
+			//下降
+			animator.SetInteger("JumpFlag",-1);
+		}else{
+			//平行
+			animator.SetInteger("JumpFlag",0);
+		}
+		current_pos_y = now_pos_y;
+		*/
 	}
 
 	void Chase(GameObject p){

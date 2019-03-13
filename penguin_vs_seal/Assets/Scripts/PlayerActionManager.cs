@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerActionManager : MonoBehaviour {
 
@@ -19,12 +20,20 @@ public class PlayerActionManager : MonoBehaviour {
 	private const float MOVE_SPEED = 3f; //移動速度固定値
 	private float moveSpeed; //プレイヤーの移動速度
 	private float jumpPower = 600; //ジャンプの力
+	private float time_down = 0.4f; //下降中コライダーをoffにする時間
+	private bool isDown = false; //ダウンしているかどうか
 	private bool goJump = false; //ジャンプしたかどうか
 	private bool canJump = false; //ブロックに設置しているかどうか
+	private bool canDown = false;
 	private bool goFlag = false; //ゲームオーバー
 	private const int MAX_JUMP_COUNT = 2;	// ジャンプできる回数。 
 	private int jumpCount = 0; 
 	private bool isJump = false; 
+	private BoxCollider2D b_col;
+	private CircleCollider2D c_col;
+	private Vector3 touchStartPos;
+	private Vector3 touchEndPos;
+	private string Direction = "";
 
 	public enum MOVE_DIR //移動方向定義
 	{
@@ -39,6 +48,8 @@ public class PlayerActionManager : MonoBehaviour {
 	void Start () {
 		animator = GetComponent<Animator>();
 		rbody = GetComponent<Rigidbody2D> ();
+		b_col = GetComponent<BoxCollider2D>();
+		c_col = GetComponent<CircleCollider2D>();
 	}
 	
 	// Update is called once per frame
@@ -62,8 +73,22 @@ public class PlayerActionManager : MonoBehaviour {
 			//moveDirection = MOVE_DIR.LEFT;
 		}
 
+		if (Input.GetKeyDown(KeyCode.Mouse0)){
+			touchStartPos = new Vector3(Input.mousePosition.x,
+										Input.mousePosition.y,
+										Input.mousePosition.z);
+		}
+
+		if (Input.GetKeyUp(KeyCode.Mouse0)){
+			touchEndPos = new Vector3(Input.mousePosition.x,
+									Input.mousePosition.y,
+									Input.mousePosition.z);
+			GetDirection();
+		}
+
 		//上方向キー
-		if (Input.GetKey (KeyCode.Space) || Input.GetMouseButtonDown(0)) {
+		if (Input.GetKeyDown (KeyCode.UpArrow) || Direction == "touch") {
+			Direction = "";
 			/*
 			if (canJump) {
 				goJump = true;
@@ -74,15 +99,66 @@ public class PlayerActionManager : MonoBehaviour {
 			}
 		}
 
+		//下方向キー
+		if( Input.GetKeyDown(KeyCode.DownArrow) || Direction == "down"){
+			Direction = "";
+			if(canDown){
+				canDown = false;
+				isDown = true;
+				SwitchColliderActive(false);
+				StartCoroutine(DelayMethod(time_down,()=> {
+					SwitchColliderActive(true);
+					isDown = false;
+				}));
+			}
+		}
+
 		//y軸速度取得
 		float y_velocity = rbody.velocity.y;
 		if(y_velocity == 0){
 			animator.SetInteger("JumpFlag",0);
 		}else if(y_velocity > 0){
+			//上昇
+			SwitchColliderActive(false);
 			animator.SetInteger("JumpFlag",1);
 		}else{
+			//下降
+			if(!isDown)SwitchColliderActive(true);
 			animator.SetInteger("JumpFlag",-1);
 		}
+	}
+
+	void GetDirection(){
+		float directionX = touchEndPos.x - touchStartPos.x;
+		float directionY = touchEndPos.y - touchStartPos.y;
+
+		if (Mathf.Abs(directionY) < Mathf.Abs(directionX)){
+			if (30 < directionX){
+				//右向きにフリック
+				Direction = "right";
+			}else if (-30 > directionX){
+				//左向きにフリック
+				Direction = "left";
+			}
+			
+		}else if (Mathf.Abs(directionX)<Mathf.Abs(directionY)){
+			if (30 < directionY){
+				//上向きにフリック
+				Direction = "up";
+			}else if (-30 > directionY){
+				//下向きのフリック
+				Direction = "down";
+			}
+		}else{
+				//タッチを検出
+				Direction = "touch";
+        }
+    }
+	
+
+	void SwitchColliderActive(bool b){
+		b_col.enabled = b;
+		c_col.enabled = b;
 	}
 
 	void FixedUpdate(){
@@ -115,15 +191,18 @@ public class PlayerActionManager : MonoBehaviour {
 
 	//地面に着地している
 	void OnCollisionStay2D(Collision2D col){
+		float y = Mathf.Round(col.gameObject.GetComponent<Transform>().position.y*10);
+		Debug.Log(y);
 		jumpCount = 0;
+		if(y != -32)canDown = true;
 		//canJump = true;
 	}
 
-	/* 
 	void OnCollisionExit2D(Collision2D col){
-		canJump = false;
+		//canDown = false;
+		//canJump = false;
 	}
-	*/
+	
 
 	//衝突処理
 	void OnTriggerEnter2D(Collider2D col){
@@ -178,5 +257,11 @@ public class PlayerActionManager : MonoBehaviour {
 	//プレイヤーオブジェクト削除処理
 	void DestroyPlayer(){
 		Destroy (this.gameObject);
+	}
+
+	private IEnumerator DelayMethod(float waitTime, Action action)
+	{
+		yield return new WaitForSeconds(waitTime);
+		action();
 	}
 }

@@ -59,6 +59,7 @@
      <Compile Include="Assets\Scripts\ChasePlayer.cs" />
      <Compile Include="Assets\Scripts\Const\Const.cs" />
      <Compile Include="Assets\Scripts\EnemyManager.cs" />
+     <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GameOverManager.cs" />
      <Compile Include="Assets\Scripts\MoveBackGround.cs" />
      <Compile Include="Assets\Scripts\MoveField.cs" />

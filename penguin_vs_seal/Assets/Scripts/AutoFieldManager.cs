@@ -7,8 +7,9 @@ public class AutoFieldManager : MonoBehaviour {
 
 	public List<GameObject> patterns = new List<GameObject>();
 
-	private int first_count = 3;
+	private int first_count = 2;
 	private float width_pattern = 5.6f; //patternの幅
+	private int create_count = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -19,10 +20,17 @@ public class AutoFieldManager : MonoBehaviour {
 	}
 
 	public void CreatePattern(){
+		create_count++;
 		GameObject t = this.transform.GetChild(this.transform.childCount - 1).gameObject;
 		Vector3 pos_t = t.GetComponent<Transform>().position;
 
-		int rand = new System.Random().Next(patterns.Count);
+		//int rand = new System.Random().Next(patterns.Count);
+		int rand;
+		if(create_count % 3 == 0){
+			rand = 0;
+		}else{
+			rand = UnityEngine.Random.Range(1,4);
+		}
 		GameObject pattern = (GameObject)Instantiate(patterns[rand]);
 		pattern.transform.parent = this.transform;
 		pattern.GetComponent<Transform>().localScale = new Vector3(1,1,1);
@@ -38,6 +46,7 @@ public class AutoFieldManager : MonoBehaviour {
 			SetPara(pattern,6);
 			return;
 		case 2:
+		
 			//穴あき
 			SetPara(pattern,3);
 			return;
@@ -53,11 +62,73 @@ public class AutoFieldManager : MonoBehaviour {
 	private void SetPara(GameObject obj,int num){
 		//パラメーター設定
 		int[,] array = new int[num,2];
-		for(int i=0;i<num;i++){
-			int cate = UnityEngine.Random.Range(1,3); //0:none , 1:Ally , 2:Enemy
-			int pow = UnityEngine.Random.Range(1,11); //power
-			array[i,0] = cate;
-			array[i,1] = pow;
+		int ratio;
+		if(create_count <= 10){
+			ratio = 50;
+		}else{
+			ratio = 80;
+		}
+		if(num == 9){
+			//３階建て
+			int num_strong = 0;
+			int power = PlayerPrefs.GetInt("power");
+			for(int i=0;i<num;i++){
+				int cate_racio = UnityEngine.Random.Range(1,101);
+				int cate;
+				if(cate_racio <= ratio){
+					cate = 2;
+				}else{
+					cate = 1;
+				}
+				//int cate = UnityEngine.Random.Range(1,3); //0:none , 1:Ally , 2:Enemy
+				if(i%3 == 0){
+					int isStrong = UnityEngine.Random.Range(0,2); //0:week,1:strong
+					int pow;
+					if(isStrong == 1){
+						//敵が強い
+						pow = power + UnityEngine.Random.Range(1,11);
+						num_strong++;
+					}else{
+						if(power >= 50){
+							pow = power - UnityEngine.Random.Range(10,20);
+						}else{
+							pow = UnityEngine.Random.Range(1,11);
+						}
+					}
+
+					if(i == 6){
+						if(num_strong == 0){
+							//まだ誰も強くない
+							if(UnityEngine.Random.Range(0,2) == 1){
+								pow = power + UnityEngine.Random.Range(1,11);
+							}
+						}else if(num_strong == 3){
+							//みんな強い
+							pow = UnityEngine.Random.Range(1,11);
+						}
+					}
+					array[i,0] = 2;
+					array[i,1] = pow;
+				}else{
+					int pow = UnityEngine.Random.Range(1,11); //power
+					array[i,0] = cate;
+					array[i,1] = pow;
+				}
+			}
+		}else{
+			for(int i=0;i<num;i++){
+				int cate_racio = UnityEngine.Random.Range(1,101);
+				int cate;
+				if(cate_racio <= ratio){
+					cate = 2;
+				}else{
+					cate = 1;
+				}
+				//int cate = UnityEngine.Random.Range(1,3); //0:none , 1:Ally , 2:Enemy
+				int pow = UnityEngine.Random.Range(1,11); //power
+				array[i,0] = cate;
+				array[i,1] = pow;
+			}
 		}
 		//オブジェクトに反映
 		for(int i=0;i<num;i++){

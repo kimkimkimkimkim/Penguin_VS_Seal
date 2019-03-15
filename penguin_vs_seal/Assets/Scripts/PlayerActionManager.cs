@@ -115,20 +115,26 @@ public class PlayerActionManager : MonoBehaviour {
 
 		//y軸速度取得
 		float y_velocity = rbody.velocity.y;
+		//Debug.Log(y_velocity);
 		if(y_velocity == 0){
+			if(animator.GetInteger("JumpFlag") == 0)return;
 			animator.SetInteger("JumpFlag",0);
 		}else if(y_velocity > 0){
 			//上昇
+			if(animator.GetInteger("JumpFlag") == 1)return;
 			SwitchColliderActive(false);
 			animator.SetInteger("JumpFlag",1);
-		}else{
+		}else if(y_velocity < -0.1f){
 			//下降
+			if(animator.GetInteger("JumpFlag") == -1)return;
 			if(!isDown)SwitchColliderActive(true);
 			animator.SetInteger("JumpFlag",-1);
+		}else{
+			animator.SetInteger("JumpFlag",0);
 		}
 
 		float y = this.GetComponent<Transform>().position.y;
-		Debug.Log(y);
+		//Debug.Log(y);
 		if(y >= 2){
 			SwitchColliderActive(true);
 		}
@@ -163,7 +169,7 @@ public class PlayerActionManager : MonoBehaviour {
 	
 
 	void SwitchColliderActive(bool b){
-		/*
+		/* 
 		SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
 		if(b){
 			sr.color = new Color(1,1,1,1);
@@ -200,6 +206,12 @@ public class PlayerActionManager : MonoBehaviour {
 			rbody.AddForce (Vector2.up * jumpPower);
 			jumpCount++; //ジャンプ回数をカウント
 			goJump = false;
+		}
+
+		float y = this.GetComponent<Transform>().position.y;
+		//Debug.Log(y);
+		if(y >= 2){
+			SwitchColliderActive(true);
 		}
 	}
 

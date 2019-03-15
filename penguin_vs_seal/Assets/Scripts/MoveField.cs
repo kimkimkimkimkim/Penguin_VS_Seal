@@ -18,6 +18,7 @@ public class MoveField : MonoBehaviour {
 	}
 	
 	//移動
+	/*
 	void FixedUpdate(){
 		Vector3 pos = this.GetComponent<Transform>().position;
 		/*
@@ -31,5 +32,6 @@ public class MoveField : MonoBehaviour {
 		}
 		*/
 		//this.GetComponent<Transform>().position = new Vector3(pos.x - velocity,pos.y,pos.z);
-	}
+	//}
+	
 }

@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212785753527597648}
   - component: {fileID: 61329602478161048}
   - component: {fileID: 114747249122416464}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: tileset_sliced_18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
+    border: {x: 0.01, y: 0.01, z: 0.01, w: 0.01}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 0.16, y: 0.16}
     newSize: {x: 0.16, y: 0.16}

@@ -13,7 +13,7 @@ public class ChasePlayer : MonoBehaviour {
 	private GameObject target;
 	private bool canChase = false;
 	private bool isEnter = false;
-	private float delay_time = 0.4f; 
+	private float delay_time = 0.22f; 
 	private float offset_x = 1f;
 	private int c_count; //親の子要素の個数
 	private float current_pos_y = 0;

@@ -12,6 +12,7 @@ public class PlayerPower : MonoBehaviour {
 		CreateSubPlayer(pow);
 		power = pow;
 		this.transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = power.ToString();
+		PlayerPrefs.SetInt("power",power);
 
 	}
 

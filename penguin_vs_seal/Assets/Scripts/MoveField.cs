@@ -20,6 +20,7 @@ public class MoveField : MonoBehaviour {
 	//移動
 	void FixedUpdate(){
 		Vector3 pos = this.GetComponent<Transform>().position;
+		/*
 		if(pos.x <= limit){
 			Destroy(this.gameObject);
 			return;
@@ -28,6 +29,7 @@ public class MoveField : MonoBehaviour {
 		}else{
 			sr.color = new Color(1,1,1,1);
 		}
-		this.GetComponent<Transform>().position = new Vector3(pos.x - velocity,pos.y,pos.z);
+		*/
+		//this.GetComponent<Transform>().position = new Vector3(pos.x - velocity,pos.y,pos.z);
 	}
 }

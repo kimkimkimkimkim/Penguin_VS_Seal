@@ -26,7 +26,7 @@ public class PlayerActionManager : MonoBehaviour {
 	private bool canJump = false; //ブロックに設置しているかどうか
 	private bool canDown = false;
 	private bool goFlag = false; //ゲームオーバー
-	private const int MAX_JUMP_COUNT = 2;	// ジャンプできる回数。 
+	private const int MAX_JUMP_COUNT = 1;	// ジャンプできる回数。 
 	private int jumpCount = 0; 
 	private bool isJump = false; 
 	private BoxCollider2D b_col;
@@ -94,7 +94,7 @@ public class PlayerActionManager : MonoBehaviour {
 				goJump = true;
 			}
 			*/
-			if(jumpCount <= MAX_JUMP_COUNT){
+			if(jumpCount < MAX_JUMP_COUNT){
 				goJump = true;
 			}
 		}
@@ -126,6 +126,12 @@ public class PlayerActionManager : MonoBehaviour {
 			if(!isDown)SwitchColliderActive(true);
 			animator.SetInteger("JumpFlag",-1);
 		}
+
+		float y = this.GetComponent<Transform>().position.y;
+		Debug.Log(y);
+		if(y >= 2){
+			SwitchColliderActive(true);
+		}
 	}
 
 	void GetDirection(){
@@ -152,11 +158,19 @@ public class PlayerActionManager : MonoBehaviour {
 		}else{
 				//タッチを検出
 				Direction = "touch";
-        }
-    }
+    	}
+  }
 	
 
 	void SwitchColliderActive(bool b){
+		/*
+		SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
+		if(b){
+			sr.color = new Color(1,1,1,1);
+		}else{
+			sr.color = new Color(0,0,0,1);
+		}
+		*/
 		b_col.enabled = b;
 		c_col.enabled = b;
 	}
@@ -192,13 +206,13 @@ public class PlayerActionManager : MonoBehaviour {
 	//地面に着地している
 	void OnCollisionStay2D(Collision2D col){
 		float y = Mathf.Round(col.gameObject.GetComponent<Transform>().position.y*10);
-		Debug.Log(y);
 		jumpCount = 0;
 		if(y != -32)canDown = true;
 		//canJump = true;
 	}
 
 	void OnCollisionExit2D(Collision2D col){
+		canDown = false;
 		//canDown = false;
 		//canJump = false;
 	}

@@ -55,6 +55,7 @@ public class PlayerActionManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(PlayerPrefs.GetInt("gamestart",0) == 0)return;
 		canJump = Physics2D.Linecast (transform.position - (transform.right * 0.1f),
 			transform.position - (transform.up * 0.1f),blockLayer) ||
 			Physics2D.Linecast (transform.position + (transform.right * 0.1f),

@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		RemainAudio.Instance.Play();
 		//Time.timeScale = 0;
 		PlayerPrefs.SetInt("gamestart",0);
 		PlayerPrefs.SetInt("power",1);

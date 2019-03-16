@@ -3,6 +3,7 @@ PlayerPath?
 /Volumes/KESU/Document/iosApp/TsunageteQuest
 SceneListBegin?
 Assets/Scenes/SampleScene.unity
+Assets/Scenes/Ranking.unity
 SceneListEnd?
 c422dd62785a6d0afa870fbd111886ce Unity.TextMeshPro.dll:TMPro.TMP_SelectionCaret
 7b803eb2910e9b4cd5e521ae07b9f7d6 Unity.TextMeshPro.dll:TMPro.TMP_Dropdown
@@ -185,3 +186,11 @@ c9548ccab9fac9bf78c4d5c30c4d1b3f Assembly-CSharp.dll:.RemainAudio
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp-firstpass.dll:.MoveSample
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp-firstpass.dll:.RotateSample
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.TitleButton
+486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:NCMB.NCMBManager
+e8a2a16d4b7130908de58486245e3757 Assembly-CSharp.dll:NCMB.NCMBSettings
+d58bf8686b1df9ffe227268500d62766 Assembly-CSharp.dll:naichilab.RankingBoards
+041c1414e51c7ff9b403fee8d60a0600 Assembly-CSharp.dll:naichilab.RankingSceneManager
+8830c98949055175223a0fe441547391 Assembly-CSharp.dll:.SampleSceneManager
+cd79e95737a9059076729f44072ee3e3 Assembly-CSharp.dll:naichilab.RankingInfo
+a6010f32fa76aa68f2da77573a1e333a Assembly-CSharp.dll:naichilab.RankingNode
+81c7ff556752ec8ea3663e095e7c18c8 Assembly-CSharp.dll:naichilab.RankingLoader

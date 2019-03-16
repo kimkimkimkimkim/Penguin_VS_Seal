@@ -19,12 +19,16 @@ public class GameOverManager : MonoBehaviour {
 		txt_score.GetComponent<TextMeshProUGUI>().text = score.ToString() + " M";
 		txt_best.GetComponent<TextMeshProUGUI>().text = PlayerPrefs.GetInt("best",0).ToString() + " M";
 
-		GameOverView.SetActive(true); //ゲームオーバービュー表示
+		//GameOverView.SetActive(true); //ゲームオーバービュー表示
+		naichilab.RankingLoader.Instance.SendScoreAndShowRanking (score);
+		PlayerPrefs.SetInt("gamestart",0);
+		/*
 		if(Time.timeScale != 0){
 			Time.timeScale = 0;
 		}else{
 			Time.timeScale = 1.0f;
 		}
+		*/
 
 	}
 }

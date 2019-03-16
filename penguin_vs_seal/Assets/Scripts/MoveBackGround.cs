@@ -28,6 +28,7 @@ public class MoveBackGround : MonoBehaviour {
 	
 	//背景画像を移動させる
 	void FixedUpdate(){
+		if(PlayerPrefs.GetInt("gamestart",0) == 0)return;
 		float xPos = this.transform.GetChild(pivot).gameObject.GetComponent<Transform>().position.x;
 		//左まで行ったら右に戻ってくる
 		if(xPos <= -1*(width_bg*1.5f)) {

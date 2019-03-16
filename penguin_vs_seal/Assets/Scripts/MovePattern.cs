@@ -17,6 +17,8 @@ public class MovePattern : MonoBehaviour {
 	
 	//移動
 	void FixedUpdate(){
+		int isStart = PlayerPrefs.GetInt("gamestart",0);
+		if(isStart == 0)return;
 		Vector3 pos = this.GetComponent<Transform>().position;
 		if(pos.x <= limit){
 			Destroy(this.gameObject);

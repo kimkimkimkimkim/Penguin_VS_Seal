@@ -82,6 +82,7 @@ public class ChasePlayer : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D col)
 	{	
 		if(col.tag == "Player" && !isEnter){
+			RemainAudio.Instance.PlaySE("ally");
 			player = col.gameObject;
 			int subp_power = this.gameObject.GetComponent<SubPlayerManager>().power;
 			//player.GetComponent<PlayerPower>().power = player.GetComponent<PlayerPower>().power + 1;

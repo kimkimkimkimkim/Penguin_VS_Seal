@@ -26,7 +26,7 @@ public class PlayerActionManager : MonoBehaviour {
 	private bool canJump = false; //ブロックに設置しているかどうか
 	private bool canDown = false;
 	private bool goFlag = false; //ゲームオーバー
-	private const int MAX_JUMP_COUNT = 1;	// ジャンプできる回数。 
+	private const int MAX_JUMP_COUNT = 2;	// ジャンプできる回数。 
 	private int jumpCount = 0; 
 	private bool isJump = false; 
 	private BoxCollider2D b_col;
@@ -50,15 +50,16 @@ public class PlayerActionManager : MonoBehaviour {
 		rbody = GetComponent<Rigidbody2D> ();
 		b_col = GetComponent<BoxCollider2D>();
 		c_col = GetComponent<CircleCollider2D>();
+		animator.SetBool("isRunning",false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
 		canJump = Physics2D.Linecast (transform.position - (transform.right * 0.1f),
 			transform.position - (transform.up * 0.1f),blockLayer) ||
 			Physics2D.Linecast (transform.position + (transform.right * 0.1f),
 				transform.position - (transform.up * 0.1f),blockLayer);
+		if(canJump)jumpCount = 0;
 
 		//何も押してないとき
 		moveDirection = MOVE_DIR.STOP;
@@ -94,6 +95,7 @@ public class PlayerActionManager : MonoBehaviour {
 				goJump = true;
 			}
 			*/
+			//Debug.Log("before:" + jumpCount);
 			if(jumpCount < MAX_JUMP_COUNT){
 				goJump = true;
 			}
@@ -201,10 +203,16 @@ public class PlayerActionManager : MonoBehaviour {
 
 		//ジャンプ処理
 		if (goJump) {
+			//Debug.Log("jumpCount:" + jumpCount);
+			if(jumpCount==0){
+				RemainAudio.Instance.PlaySE("jump");
+			}else{
+				RemainAudio.Instance.PlaySE("jump2");
+			}
+			jumpCount++;
 			Vector3 v = rbody.velocity;
 			rbody.velocity = new Vector3(v.x,0,v.z); //y方向の速度を初期化
 			rbody.AddForce (Vector2.up * jumpPower);
-			jumpCount++; //ジャンプ回数をカウント
 			goJump = false;
 		}
 
@@ -218,7 +226,7 @@ public class PlayerActionManager : MonoBehaviour {
 	//地面に着地している
 	void OnCollisionStay2D(Collision2D col){
 		float y = Mathf.Round(col.gameObject.GetComponent<Transform>().position.y*10);
-		jumpCount = 0;
+		//jumpCount = 0;
 		if(y != -32)canDown = true;
 		//canJump = true;
 	}
@@ -238,6 +246,7 @@ public class PlayerActionManager : MonoBehaviour {
 		}
 
 		if(col.gameObject.tag == "Frog"){
+			RemainAudio.Instance.PlaySE("enemy");
 			bool canBattle = col.gameObject.GetComponent<EnemyManager>().canBattle;
 			if(canBattle){
 				col.gameObject.GetComponent<EnemyManager>().canBattle = false;

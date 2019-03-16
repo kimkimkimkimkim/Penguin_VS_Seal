@@ -16,6 +16,7 @@ public class ReloadButton : MonoBehaviour {
 	}
 
 	public void Reload(){
+		PlayerPrefs.SetInt("restart",1);
 		//スタート
 		Time.timeScale = 1.0f;
 		// 現在のScene名を取得する
